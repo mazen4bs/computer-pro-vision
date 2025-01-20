@@ -7,7 +7,7 @@ def main():
     cap = cv2.VideoCapture(0)
     pTime = 0
     detector = HandTracker()
-    volume_control = VolumeControl(detector, threshold_up=100, threshold_down=135)  # Customize thresholds
+    volume_control = VolumeControl(detector)  # Pass the hand tracker instance to VolumeControl
 
     while True:
         success, img = cap.read()
