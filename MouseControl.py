@@ -2,7 +2,7 @@ import pyautogui
 import numpy as np
 
 class MouseControl:
-    def __init__(self, screen_width=1920, screen_height=1080, smoothing=3, padding=10):
+    def __init__(self, screen_width=1920, screen_height=1080, smoothing=0, padding=10):
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.smoothing = smoothing
@@ -14,10 +14,10 @@ class MouseControl:
         x = (thumb_pos[0] + index_pos[0]) / 2
         y = (thumb_pos[1] + index_pos[1]) / 2
 
-        # Map the midpoint to the screen size with padding
-        screen_x = np.interp(x, [0, 640], [self.padding, self.screen_width - self.padding])
-        screen_y = np.interp(y, [0, 480], [self.padding, self.screen_height - self.padding])
-        screen_y = self.screen_height - screen_y  # Invert y-axis for natural movement
+        # Map the midpoint to the screen size with padding and invert x movement
+        screen_x = np.interp(x, [0, 1280], [self.screen_width - self.padding, self.padding])
+        screen_y = np.interp(y, [0, 720], [self.padding, self.screen_height - self.padding])
+        
 
         # Apply smoothing
         if self.prev_location is None:
