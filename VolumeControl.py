@@ -1,7 +1,7 @@
 import pyautogui
 
 class VolumeControl:
-    def __init__(self, hand_tracker, threshold_up=50, threshold_down=50):
+    def __init__(self, hand_tracker, threshold_up=100, threshold_down=100):
         self.hand_tracker = hand_tracker  # Use the HandTracker instance
         self.threshold_up = threshold_up  # Threshold for fingers to be considered "up"
         self.threshold_down = threshold_down  # Threshold for fingers to be considered "down"
