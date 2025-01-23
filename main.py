@@ -1,8 +1,8 @@
 import cv2
 import time
-from VolumeControl import VolumeControl  # Import the VolumeControl class
-from HandTrackingModule import HandTracker  # Import the HandTracker class
-from MouseControl import MouseControl  # Import the MouseControl class
+from VolumeControl import VolumeControl  
+from HandTrackingModule import HandTracker
+from MouseControl import MouseControl  
 
 def main():
     cap = cv2.VideoCapture(0)
