@@ -58,12 +58,12 @@ class MouseControl:
                 return  # Avoid sudden jump at start
 
             # Calculate relative movement from the starting point
-            scroll_amount = (middle_tip[1] - self.start_scroll_y) // 5  # Adjust divisor for sensitivity
+            scroll_amount = (middle_tip[1] - self.start_scroll_y) // 5  # Adjust sensitivity
 
             if scroll_amount > 0:
-                pyautogui.scroll(-int(abs(scroll_amount) * 2))  # Scroll down
+                pyautogui.scroll(int(abs(scroll_amount) * 2))  # Scroll UP (inverted)
             elif scroll_amount < 0:
-                pyautogui.scroll(int(abs(scroll_amount) * 2))  # Scroll up
+                pyautogui.scroll(-int(abs(scroll_amount) * 2))  # Scroll DOWN (inverted)
 
         else:
             # Reset when fingers separate
