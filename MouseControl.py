@@ -10,6 +10,7 @@ class MouseControl:
         self.padding = padding  # Padding to prevent reaching edges
         self.scaling_factor = scaling_factor  # Amplify small hand movements
         self.scroll_threshold = scroll_threshold  # Threshold for activating scrolling
+        self.scroll_active = False  # Track if scrolling is happening
         self.prev_scroll_y = None  # Track previous Y position for smooth scrolling
 
     def move_pointer(self, index_pos, thumb_pos):
@@ -42,22 +43,29 @@ class MouseControl:
             pyautogui.click()
 
     def scroll(self, thumb_tip, middle_tip):
-      """Scrolls when middle finger and thumb are close, based on vertical movement."""
-      dx = thumb_tip[0] - middle_tip[0]
-      dy = thumb_tip[1] - middle_tip[1]
-      distance = np.sqrt(dx**2 + dy**2)
+        """Scrolls when the middle finger and thumb are close, based on vertical movement."""
 
-      if distance < self.scroll_threshold:
-          if self.prev_scroll_y is None:
-              self.prev_scroll_y = middle_tip[1]
-              return  # Skip first detection to avoid sudden jumps
+        # Calculate distance between middle finger tip and thumb tip
+        dx = thumb_tip[0] - middle_tip[0]
+        dy = thumb_tip[1] - middle_tip[1]
+        distance = np.sqrt(dx**2 + dy**2)
 
-          # Adjust scroll speed by increasing multiplier
-          scroll_amount = (middle_tip[1] - self.prev_scroll_y) // 3  # Reduce division to increase speed
-          self.prev_scroll_y = middle_tip[1]
+        if distance < self.scroll_threshold:
+            if not self.scroll_active:
+                # First time fingers come close, store initial Y position
+                self.start_scroll_y = middle_tip[1]
+                self.scroll_active = True
+                return  # Avoid sudden jump at start
 
-          if scroll_amount > 0:
-              pyautogui.scroll(-int(abs(scroll_amount) * 3))  # Multiply by 3 for a larger step
-          elif scroll_amount < 0:
-              pyautogui.scroll(int(abs(scroll_amount) * 3))  # Multiply by 3 for a larger step
+            # Calculate relative movement from the starting point
+            scroll_amount = (middle_tip[1] - self.start_scroll_y) // 5  # Adjust divisor for sensitivity
 
+            if scroll_amount > 0:
+                pyautogui.scroll(-int(abs(scroll_amount) * 2))  # Scroll down
+            elif scroll_amount < 0:
+                pyautogui.scroll(int(abs(scroll_amount) * 2))  # Scroll up
+
+        else:
+            # Reset when fingers separate
+            self.scroll_active = False
+            self.start_scroll_y = None
