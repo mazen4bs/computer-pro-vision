@@ -26,7 +26,8 @@ def main():
 
             mouse_control.move_pointer(index_finger_pos, thumb_tip)
             mouse_control.click(thumb_tip, index_finger_pos)
-            mouse_control.scroll(thumb_tip, middle_tip)  # Add scrolling logic
+            mouse_control.right_click(thumb_tip, middle_tip) 
+            mouse_control.scroll(thumb_tip, middle_tip)  
 
         # Volume Control
         volume_control.control_volume(img)

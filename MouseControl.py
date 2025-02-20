@@ -2,7 +2,7 @@ import pyautogui
 import numpy as np
 
 class MouseControl:
-    def __init__(self, screen_width=1920, screen_height=1080, smoothing=5, padding=1, scaling_factor=4, scroll_threshold=50):
+    def __init__(self, screen_width=1920, screen_height=1080, smoothing=5, padding=1, scaling_factor=4, scroll_threshold=50,click_threshold=30):
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.smoothing = smoothing
@@ -12,6 +12,8 @@ class MouseControl:
         self.scroll_threshold = scroll_threshold  # Threshold for activating scrolling
         self.scroll_active = False  # Track if scrolling is happening
         self.prev_scroll_y = None  # Track previous Y position for smooth scrolling
+        self.click_threshold = click_threshold  # Threshold for clicks
+
 
     def move_pointer(self, index_pos, thumb_pos):
       x = (index_pos[0] + thumb_pos[0]) / 2  
@@ -41,6 +43,14 @@ class MouseControl:
 
         if distance < threshold:
             pyautogui.click()
+
+    def right_click(self, thumb_tip, middle_tip):
+          dx = thumb_tip[0] - middle_tip[0]
+          dy = thumb_tip[1] - middle_tip[1]
+          distance = np.sqrt(dx**2 + dy**2)
+
+          if distance < self.click_threshold:
+              pyautogui.rightClick()
 
     def scroll(self, thumb_tip, middle_tip):
         """Scrolls when the middle finger and thumb are close, based on vertical movement."""

@@ -13,14 +13,13 @@ class VolumeControl:
             # Check positions of index and middle fingers
             index_tip = lmList[8][2]  # y-coordinate of index finger tip
             index_base = lmList[5][2]  # y-coordinate of index finger base
-            middle_tip = lmList[12][2]  # y-coordinate of middle finger tip
-            middle_base = lmList[9][2]  # y-coordinate of middle finger base
+            pinky_tip = lmList[20][2]  # y-coordinate of pinky finger tip
+            pinky_base = lmList[17][2]  # y-coordinate of pinky finger base
 
-            # Check if the fingers are "up" or "down" with separate thresholds
             index_up = index_tip < index_base - self.threshold_up
-            middle_up = middle_tip < middle_base - self.threshold_up
+            middle_up = pinky_tip < pinky_base - self.threshold_up
             index_down = index_tip > index_base + self.threshold_down
-            middle_down = middle_tip > middle_base + self.threshold_down
+            middle_down = pinky_tip > pinky_base + self.threshold_down
 
             # Adjust volume based on finger states
             if index_up and middle_up:
