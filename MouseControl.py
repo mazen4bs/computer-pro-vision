@@ -14,24 +14,24 @@ class MouseControl:
         self.prev_scroll_y = None  # Track previous Y position for smooth scrolling
 
     def move_pointer(self, index_pos, thumb_pos):
-        """Moves the mouse pointer based on hand position."""
-        x = (index_pos[0] + thumb_pos[0]) / 3
-        y = (index_pos[1] + thumb_pos[1]) / 3
+      x = (index_pos[0] + thumb_pos[0]) / 2  
+      y = (index_pos[1] + thumb_pos[1]) / 2  
 
-        screen_x = np.interp(x, [0, 1280], [self.screen_width - self.padding, self.padding])
-        screen_y = np.interp(y, [0, 720], [self.padding, self.screen_height - self.padding])
+      # Invert Left-Right Movement (Moving right moves cursor left, and vice versa)
+      screen_x = np.interp(x, [0, 1280], [self.screen_width - self.padding, self.padding])  
+      screen_y = np.interp(y, [0, 720], [self.padding, self.screen_height - self.padding])
 
-        if self.prev_location is None:
-            self.prev_location = (screen_x, screen_y)
-        else:
-            prev_x, prev_y = self.prev_location
-            delta_x = (screen_x - prev_x) * self.scaling_factor
-            delta_y = (screen_y - prev_y) * self.scaling_factor
-            screen_x = prev_x + delta_x / self.smoothing
-            screen_y = prev_y + delta_y / self.smoothing
-            self.prev_location = (screen_x, screen_y)
+      # Apply Smoothing for smoother motion
+      if self.prev_location is None:
+          self.prev_location = (screen_x, screen_y)
+      else:
+          prev_x, prev_y = self.prev_location
+          screen_x = prev_x + (screen_x - prev_x) / self.smoothing
+          screen_y = prev_y + (screen_y - prev_y) / self.smoothing
+          self.prev_location = (screen_x, screen_y)
 
-        pyautogui.moveTo(screen_x, screen_y)
+      pyautogui.moveTo(screen_x, screen_y)
+
 
     def click(self, thumb_tip, index_tip, threshold=30):
         """Triggers a mouse click if thumb and index finger are close."""
